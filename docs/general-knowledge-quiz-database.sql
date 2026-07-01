@@ -684,3 +684,21 @@ CREATE TABLE user_category_stats (
 
     PRIMARY KEY (user_id, category_id)
 );
+
+-- ----------------------------------------------------------------------------
+-- QUIZ_SESSIONS — one row per quiz round a user plays in a category.
+-- "next question" excludes any question answered after session.created_at
+-- so the user never sees the same question twice in one round.
+-- ----------------------------------------------------------------------------
+CREATE TABLE quiz_sessions (
+    id                BIGSERIAL PRIMARY KEY,
+    user_id           UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    category_id       BIGINT NOT NULL REFERENCES categories(id) ON DELETE CASCADE,
+    total_questions   INTEGER NOT NULL DEFAULT 0,
+    answered_count    INTEGER NOT NULL DEFAULT 0,
+    correct_count     INTEGER NOT NULL DEFAULT 0,
+    created_at        TIMESTAMPTZ NOT NULL DEFAULT now(),
+    completed_at      TIMESTAMPTZ
+);
+
+CREATE INDEX quiz_sessions_user_idx ON quiz_sessions (user_id, category_id);

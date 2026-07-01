@@ -187,3 +187,45 @@ export async function remove(id: string): Promise<void> {
     ORDER BY nlevel(path) DESC
   `, [categoryPath]);
 }
+
+export interface CompletionStatus {
+  categoryId: string;
+  totalQuestions: number;
+  answeredQuestions: number;
+  completed: boolean;
+}
+
+export async function getCompletionStatus(userId: string): Promise<CompletionStatus[]> {
+  const result = await pool.query<{
+    category_id: string; total: string; answered: string;
+  }>(
+    `SELECT
+       c.id AS category_id,
+       (SELECT COUNT(DISTINCT q.id) FROM questions q
+        JOIN categories sub ON sub.id = q.category_id
+        WHERE sub.path <@ c.path)::text AS total,
+       (SELECT COUNT(DISTINCT ua.question_id) FROM user_answers ua
+        JOIN questions q ON q.id = ua.question_id
+        JOIN categories sub ON sub.id = q.category_id
+        WHERE sub.path <@ c.path AND ua.user_id = $1)::text AS answered
+     FROM categories c
+     WHERE EXISTS (
+       SELECT 1 FROM questions q2
+       JOIN categories sub ON sub.id = q2.category_id
+       WHERE sub.path <@ c.path
+     )
+     ORDER BY c.path`,
+    [userId]
+  );
+
+  return result.rows.map(r => {
+    const total = parseInt(r.total, 10);
+    const answered = parseInt(r.answered, 10);
+    return {
+      categoryId: r.category_id,
+      totalQuestions: total,
+      answeredQuestions: answered,
+      completed: total > 0 && answered >= total,
+    };
+  });
+}

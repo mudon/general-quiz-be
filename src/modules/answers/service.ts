@@ -111,6 +111,22 @@ export async function submitAnswer(userId: string, questionId: string, input: Su
   // update stats
   upsertStats(userId, question.rows[0]!.category_id, submitted.is_correct);
 
+  // increment active quiz sessions that include this question's category
+  await pool.query(
+    `UPDATE quiz_sessions qs
+     SET answered_count = answered_count + 1,
+         correct_count = correct_count + CASE WHEN $1 THEN 1 ELSE 0 END
+     WHERE qs.user_id = $2
+       AND qs.completed_at IS NULL
+       AND EXISTS (
+         SELECT 1 FROM questions q
+         JOIN categories c ON c.id = q.category_id
+         WHERE q.id = $3
+           AND c.path <@ (SELECT path FROM categories WHERE id = qs.category_id)
+       )`,
+    [submitted.is_correct, userId, questionId]
+  );
+
   // check & auto-award badges
   const newBadges = await checkAndAwardBadges(userId);
 

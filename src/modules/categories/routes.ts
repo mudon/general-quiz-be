@@ -87,6 +87,16 @@ export const categoryRoutes = new Elysia()
   }, {
     params: t.Object({ id: t.String() }),
     detail: { tags: ['Admin / Categories'], summary: 'Delete a category and its descendants' },
+  })
+
+  // GET /api/categories/completion-status  (auth required)
+  .get('/api/categories/completion-status', async ({ user }) => {
+    if (!user || typeof user !== 'object' || !('sub' in (user as Record<string, unknown>))) {
+      throw new AppError(401, 'Authentication required');
+    }
+    return await categoriesService.getCompletionStatus((user as { sub: string }).sub);
+  }, {
+    detail: { tags: ['Categories'], summary: 'Get completion status for all categories' },
   });
 
 export type CategoryRoutes = typeof categoryRoutes;

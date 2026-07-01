@@ -41,8 +41,8 @@ POST /api/auth/login
       "email":    "string (email format)",
       "password": "string"
     }
-  Response 200: same shape as POST /register
-  Errors: 401 (invalid credentials)
+   Response 200: same shape as POST /register
+   Errors: 401 (invalid credentials), 403 (email not verified)
 
 ---
 
@@ -73,7 +73,7 @@ POST /api/auth/forgot-password
       "message":   "If that email exists, a reset link has been sent",
       "debugToken": "jwt (only in non-production)"
     }
-  Notes: reset token is a signed JWT, valid 15 minutes. Token is logged to console.
+   Notes: reset token is a signed JWT, valid 3 minutes. Token is sent via SMTP (Mailtrap).
 
 ---
 
@@ -171,12 +171,55 @@ POST /api/auth/send-verification
 ---
 
 POST /api/auth/verify-email
-  Auth: none
-  Body:
-    { "token": "jwt (from send-verification)" }
-  Response 200:
-    { "message": "Email verified successfully" }
-  Errors: 400 (invalid/expired token)
+   Auth: none
+   Body:
+     { "token": "jwt (from send-verification)" }
+   Response 200:
+     { "message": "Email verified successfully" }
+   Errors: 400 (invalid/expired token)
+
+---
+   
+POST /api/auth/change-email
+   Auth: Bearer <accessToken>
+   Body:
+     {
+       "currentPassword": "string",
+       "newEmail":        "string (email format)"
+     }
+   Response 200:
+     { 
+       "message":   "Verification sent to new@email.com. Use the token to confirm.",
+       "debugToken": "jwt (only in non-production)"
+     }
+   Errors: 401 (wrong password), 409 (email already taken), 400 (Google account)
+   Notes: sends verification token to the NEW email. Old email still works until verified.
+          Token expires in 3 minutes.
+
+---
+
+POST /api/auth/verify-new-email
+   Auth: none
+   Body:
+     { "token": "jwt (from change-email)" }
+   Response 200:
+     { "message": "Email changed successfully. Please log in with your new email." }
+   Errors: 400 (invalid/expired token), 409 (email taken since request)
+   Notes: updates users.email, invalidates all refresh tokens (force re-login).
+
+---
+   
+POST /api/auth/resend-verification
+   Auth: none
+   Body:
+     { "email": "string (email format)" }
+   Response 200:
+     { 
+       "message":   "If that email is registered and unverified, a new code has been sent.",
+       "debugToken": "jwt (only in non-production)"
+     }
+   Notes: public endpoint (unverified users can't login, so no auth required).
+          Token expires in 3 minutes.
 
 ================================================================================
 CATEGORIES /api/categories  +  /api/admin/categories
@@ -223,9 +266,29 @@ GET /api/categories
 ---
 
 GET /api/categories/:id
-  Auth: none
-  Response 200: single CategoryTree object (with empty children array)
-  Errors: 404
+   Auth: none
+   Response 200: single CategoryTree object (with empty children array)
+   Errors: 404
+
+---
+
+GET /api/categories/completion-status
+   Auth: Bearer <accessToken>
+   Response 200:
+     [
+       {
+         "categoryId":       "string",
+         "totalQuestions":   "number (count in entire subtree)",
+         "answeredQuestions": "number (distinct questions answered at least once)",
+         "completed":        "boolean (answeredQuestions >= totalQuestions)"
+       }
+     ]
+   Notes: only returns categories that have at least one question in their subtree.
+          Uses ltree <@ to count across the full category tree.
+          A parent category shows completed = true only when ALL descendants
+          have all questions answered.
+          Counts are computed live from user_answers — never stale.
+          Ordered by category path.
 
 ---
 
@@ -511,8 +574,95 @@ GET /api/answers/history
       "nextCursor": "string | null",
       "hasMore":    "boolean"
     }
-  Notes: ordered newest-first (DESC by id).
-         Pagination: send ?cursor=<lastItemId> to get older answers.
+   Notes: ordered newest-first (DESC by id).
+          Pagination: send ?cursor=<lastItemId> to get older answers.
+
+================================================================================
+QUIZ SESSIONS /api/quiz/sessions
+================================================================================
+
+POST /api/quiz/sessions
+   Auth: Bearer <accessToken>
+   Body:
+     { "categoryId": "string" }
+   Response 200:
+     {
+       "sessionId":      "string",
+       "categoryId":     "string",
+       "categoryName":   "string",
+       "totalQuestions": "number (count in category subtree)",
+       "answeredCount":  "number",
+       "correctCount":   "number",
+       "createdAt":      "ISO8601",
+       "completedAt":    "null"
+     }
+   Notes: counts all questions in the category's entire subtree (via ltree <@).
+          If the user already has an active session for this category, a new
+          session row is created (multiple sessions per category are possible).
+
+---
+
+GET /api/quiz/sessions
+   Auth: Bearer <accessToken>
+   Response 200:
+     [
+       {
+         "sessionId":      "string",
+         "categoryId":     "string",
+         "categoryName":   "string",
+         "totalQuestions": "number",
+         "answeredCount":  "number (computed live from user_answers)",
+         "correctCount":   "number (computed live from user_answers)",
+         "createdAt":      "ISO8601",
+         "completedAt":    "string | null"
+       }
+     ]
+   Notes: only returns sessions where completed_at IS NULL.
+          answeredCount and correctCount are computed live from user_answers
+          at query time (not from the column), so they're always accurate
+          even if the app was closed mid-session.
+
+---
+
+GET /api/quiz/sessions/:id/next
+   Auth: none
+   Response 200 (question available):
+     {
+       "completed":    false,
+       "questionId":   "string",
+       "questionText": "string",
+       "questionType": "single_choice | multiple_choice | fill_in_blank",
+       "categoryId":   "string",
+       "categoryName": "string",
+       "options": [
+         { "id": "string", "text": "string", "sort_order": "number" }
+       ] | null,
+       "session": {
+         "totalQuestions":  "number",
+         "answeredCount":   "number",
+         "remainingCount":  "number"
+       }
+     }
+   Response 200 (all questions answered):
+     {
+       "completed":       true,
+       "totalQuestions":  "number",
+       "answeredCount":   "number"
+     }
+   Notes: picks a random question that the user hasn't answered during
+          this session (compared via user_answers.answered_at > session.created_at).
+          When no questions remain, auto-completes the session (sets completed_at).
+          Session counts are live-computed from user_answers, never stale.
+
+---
+
+PUT /api/quiz/sessions/:id/reset
+   Auth: none
+   Response 200:
+     { "message": "Session reset", "sessionId": "string", "totalQuestions": "number" }
+   Errors: 404 (session not found or already completed)
+   Notes: resets answered_count = 0, correct_count = 0, recalculates total_questions,
+          and resets created_at to now() (so future answers count for the fresh round).
 
 ================================================================================
 STATS /api/stats  +  /api/stats/categories
@@ -738,7 +888,9 @@ GENERAL NOTES
 
 - Access tokens expire after 15 minutes.
 - Refresh tokens expire after 7 days (stored hashed in refresh_tokens table).
+- Verification/reset tokens expire after 3 minutes.
 - All authenticated endpoints require: Authorization: Bearer <accessToken>
+- Emails (forgot-password, verify-email, change-email) sent via nodemailer + Mailtrap SMTP.
 - Admin endpoints additionally require role = "admin".
 - Rate limiting applies to: login (5/15min), register (3/15min),
   forgot-password (3/15min), refresh (10/min), verify-email (5/15min),

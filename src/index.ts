@@ -9,6 +9,7 @@ import { statsRoutes } from './modules/stats/routes';
 import { badgeRoutes } from './modules/badges/routes';
 import { seedBadges } from './modules/badges/seed';
 import { adminRoutes } from './modules/admin/routes';
+import { quizRoutes } from './modules/quiz/routes';
 import { initDatabase } from './db/init';
 import { AppError } from './modules/auth/service';
 
@@ -37,6 +38,7 @@ const app = new Elysia()
   .use(questionRoutes)
   .use(statsRoutes)
   .use(badgeRoutes)
+  .use(quizRoutes)
   .use(adminRoutes)
   .get('/health', () => ({ status: 'ok', timestamp: new Date().toISOString() }));
 
