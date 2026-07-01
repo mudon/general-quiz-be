@@ -1,0 +1,803 @@
+Earth & Geography
+Countries
+States/Provinces
+Cities
+Villages
+Capitals
+Continents
+Oceans
+Seas
+Rivers
+Lakes
+Mountains
+Volcanoes
+Deserts
+Forests
+Islands
+National Parks
+Time Zones
+Climate
+Weather
+Natural Resources
+Population
+Demographics
+🏛 Government
+Executive Branch
+Legislature
+Judiciary
+Constitutions
+Ministries
+Public Administration
+Elections
+Voting Systems
+Political Parties
+Public Policy
+Civil Service
+🌐 International Affairs
+Diplomacy
+International Organizations
+Peace Treaties
+Alliances
+Sanctions
+Trade Agreements
+Refugees
+Immigration
+Border Disputes
+Global Security
+⚔ Defense & Security
+Military Branches
+Weapons
+Tanks
+Aircraft
+Ships
+Submarines
+Missiles
+Drones
+Cyber Defense
+Intelligence Agencies
+Peacekeeping
+Counterterrorism
+🏺 Ancient Civilizations
+Egypt
+Rome
+Greece
+Persia
+China
+Maya
+Aztec
+Inca
+Mesopotamia
+Indus Valley
+🧬 Biology
+Cells
+DNA
+Evolution
+Ecology
+Marine Biology
+Zoology
+Botany
+Genetics
+Human Biology
+Biotechnology
+⚛ Physics
+Mechanics
+Thermodynamics
+Optics
+Electricity
+Magnetism
+Quantum Physics
+Nuclear Physics
+Relativity
+Particle Physics
+🧪 Chemistry
+Organic Chemistry
+Inorganic Chemistry
+Physical Chemistry
+Analytical Chemistry
+Biochemistry
+Chemical Reactions
+Elements
+Periodic Table
+💻 Computing
+Computer Science
+Algorithms
+Data Structures
+Operating Systems
+Networking
+Databases
+Programming Languages
+Software Design
+Web Development
+Mobile Development
+DevOps
+Embedded Systems
+🤖 Artificial Intelligence
+Machine Learning
+Deep Learning
+Neural Networks
+Computer Vision
+NLP
+Robotics
+Expert Systems
+Reinforcement Learning
+AI Ethics
+📱 Consumer Technology
+Smartphones
+Tablets
+Computers
+Smart Homes
+Wearables
+Cameras
+Audio Equipment
+Gaming Consoles
+🎓 Education
+Primary Education
+Secondary Education
+Universities
+Online Learning
+Exams
+Scholarships
+Teaching Methods
+👨‍⚕️ Healthcare
+Hospitals
+Medical Devices
+Vaccination
+Public Health
+Emergency Medicine
+Pediatrics
+Cardiology
+Neurology
+Oncology
+🧠 Psychology
+Cognitive Psychology
+Clinical Psychology
+Social Psychology
+Behavioral Science
+Personality
+Memory
+Learning
+Emotions
+👨‍👩‍👧 Society
+Marriage
+Family
+Parenting
+Gender
+Human Rights
+Crime
+Poverty
+Equality
+Social Welfare
+🏢 Industry
+Manufacturing
+Construction
+Mining
+Agriculture
+Fisheries
+Forestry
+Logistics
+Retail
+Telecommunications
+🌾 Agriculture
+Crops
+Livestock
+Irrigation
+Farming
+Fertilizers
+Organic Farming
+Food Security
+⚡ Energy
+Oil
+Gas
+Coal
+Nuclear
+Solar
+Wind
+Hydroelectric
+Geothermal
+Hydrogen
+🚢 Transportation
+Roads
+Railways
+Aviation
+Shipping
+Space Travel
+Public Transit
+Traffic
+Infrastructure
+🏠 Real Estate
+Housing
+Mortgages
+Property Investment
+Urban Planning
+Architecture
+📺 Media
+Newspapers
+Television
+Radio
+Podcasts
+Journalism
+Social Media
+Advertising
+🎪 Lifestyle
+Fashion
+Beauty
+Fitness
+Hobbies
+DIY
+Gardening
+Photography
+🎉 Festivals & Holidays
+National Holidays
+Religious Holidays
+Cultural Festivals
+Sporting Events
+Music Festivals
+🍷 Food & Drinks
+World Cuisine
+Fast Food
+Fine Dining
+Baking
+Coffee
+Tea
+Wine
+Cocktails
+Nutrition
+🐕 Pets
+Dogs
+Cats
+Birds
+Fish
+Reptiles
+Pet Care
+Training
+🛍 Commerce
+Retail
+Wholesale
+Import
+Export
+E-commerce
+Supply Chain
+Procurement
+📊 Data
+Statistics
+Surveys
+Census
+Open Data
+Data Visualization
+🧩 Puzzles
+Chess
+Sudoku
+Crosswords
+Logic Puzzles
+Riddles
+📖 Language
+English
+Spanish
+Arabic
+Chinese
+Malay
+Japanese
+Korean
+Translation
+Grammar
+Vocabulary
+💡 Innovation
+Inventions
+Patents
+Discoveries
+Breakthroughs
+Future Technology
+👤 People
+Scientists
+Politicians
+Athletes
+Musicians
+Actors
+Authors
+Entrepreneurs
+Inventors
+Explorers
+Military Leaders
+🏛 Organizations
+Governments
+NGOs
+Companies
+Universities
+Sports Associations
+Military Alliances
+International Organizations
+🏆 Competitions
+Olympic Games
+FIFA World Cup
+Formula 1
+Nobel Prize
+Academy Awards
+Esports Tournaments
+Science Competitions
+📆 Time
+Decades
+Centuries
+Eras
+Timelines
+Historical Periods
+Calendars
+🌌 Miscellaneous
+Mythology
+Folklore
+Legends
+Conspiracy Theories (clearly labeled)
+Urban Legends
+Fun Facts
+World Records
+Guinness Records
+Quotations
+Proverbs
+Symbols
+Flags
+National Anthems
+Currency
+Measurements
+Units
+Calendars
+
+World
+Geography
+Countries
+Cities
+Capitals
+Borders
+Flags
+Maps
+Landmarks
+Oceans
+Rivers
+Mountains
+Islands
+📜 History
+Ancient History
+Medieval History
+Modern History
+Contemporary History
+Empires
+Colonization
+Revolutions
+Independence Movements
+Historical Figures
+Historical Documents
+Archaeology
+⚔ Military
+Wars
+Battles
+Military Equipment
+Military Strategy
+Armed Forces
+Special Forces
+Peacekeeping
+Intelligence
+Defense Systems
+Missiles
+Aircraft
+Naval Warfare
+Cyber Warfare
+🏛 Politics
+Governments
+Elections
+Political Parties
+Democracy
+Monarchy
+Dictatorship
+Constitutions
+Public Policy
+Diplomacy
+International Relations
+⚖ Law
+Criminal Law
+Civil Law
+International Law
+Human Rights
+Constitutional Law
+Maritime Law
+Intellectual Property
+Immigration Law
+💰 Economics
+Macroeconomics
+Microeconomics
+Inflation
+GDP
+Trade
+Employment
+Taxation
+Banking
+Monetary Policy
+Fiscal Policy
+📈 Finance
+Investing
+Stocks
+Bonds
+ETFs
+Mutual Funds
+Real Estate
+Insurance
+Personal Finance
+Retirement
+Budgeting
+Cryptocurrency
+💼 Business
+Entrepreneurship
+Marketing
+Sales
+Accounting
+Management
+Leadership
+Supply Chain
+E-commerce
+Startups
+Corporate Strategy
+💻 Technology
+Programming
+Artificial Intelligence
+Machine Learning
+Robotics
+Cloud Computing
+Databases
+Networking
+Cybersecurity
+Blockchain
+Quantum Computing
+Software Engineering
+🔬 Science
+Physics
+Chemistry
+Biology
+Astronomy
+Geology
+Oceanography
+Meteorology
+Environmental Science
+Genetics
+Microbiology
+🧮 Mathematics
+Arithmetic
+Algebra
+Geometry
+Trigonometry
+Calculus
+Statistics
+Probability
+Number Theory
+Linear Algebra
+Discrete Mathematics
+🏥 Medicine
+Human Anatomy
+Physiology
+Diseases
+Mental Health
+Pharmacology
+Surgery
+First Aid
+Public Health
+Nutrition
+Vaccines
+🌱 Environment
+Climate Change
+Renewable Energy
+Biodiversity
+Conservation
+Recycling
+Pollution
+Sustainability
+Wildlife
+🐾 Animals
+Mammals
+Birds
+Fish
+Reptiles
+Amphibians
+Insects
+Marine Life
+Endangered Species
+🌿 Plants
+Trees
+Flowers
+Agriculture
+Crops
+Forestry
+Botany
+Medicinal Plants
+🚀 Space
+Solar System
+Galaxies
+Stars
+Black Holes
+Space Missions
+Satellites
+Rockets
+Astronauts
+Space Agencies
+⚽ Sports
+Football
+Basketball
+Baseball
+Tennis
+Cricket
+Rugby
+Golf
+Athletics
+Swimming
+Cycling
+Motorsports
+Combat Sports
+Winter Sports
+Olympic Games
+Paralympics
+Esports
+🎮 Gaming
+Video Games
+Mobile Games
+PC Games
+Console Games
+Board Games
+Card Games
+Chess
+Game Development
+🎭 Entertainment
+Movies
+Television
+Streaming
+Actors
+Directors
+Awards
+Animation
+Anime
+🎵 Music
+Classical
+Rock
+Pop
+Hip Hop
+Jazz
+Country
+Electronic
+Instruments
+Music Theory
+Composers
+📚 Literature
+Novels
+Poetry
+Drama
+Children's Books
+Authors
+Literary Awards
+Mythology
+Folklore
+🎨 Arts
+Painting
+Sculpture
+Photography
+Architecture
+Graphic Design
+Fashion
+Interior Design
+🍜 Food
+National Cuisine
+Desserts
+Beverages
+Coffee
+Tea
+Street Food
+Nutrition
+Cooking Techniques
+✈ Travel
+Tourism
+Airlines
+Airports
+Hotels
+UNESCO Sites
+National Parks
+Backpacking
+Cruises
+🚗 Transportation
+Cars
+Motorcycles
+Trains
+Ships
+Aviation
+Public Transport
+Electric Vehicles
+🏛 Culture
+Traditions
+Festivals
+Customs
+Clothing
+Languages
+Cultural Heritage
+Etiquette
+⛪ Religion
+Christianity
+Islam
+Hinduism
+Buddhism
+Judaism
+Sikhism
+Indigenous Religions
+Comparative Religion
+🧠 Philosophy
+Ethics
+Logic
+Metaphysics
+Epistemology
+Eastern Philosophy
+Western Philosophy
+👥 Society
+Education
+Population
+Gender Studies
+Social Media
+Family
+Urbanization
+Poverty
+Human Development
+📰 Current Affairs
+Breaking News
+International News
+Regional News
+Elections
+Global Conflicts
+Economic Updates
+Technology News
+🏆 Awards
+Nobel Prize
+Academy Awards
+Grammy Awards
+Olympic Medals
+Pulitzer Prize
+📅 Events
+Olympic Games
+World Cups
+Expos
+Summits
+Conferences
+National Holidays
+International Days
+🔍 General Knowledge
+Famous People
+Famous Quotes
+Inventions
+Records
+Trivia
+Fun Facts
+"Firsts" (first human in space, first website, etc.)
+
+History
+Geography
+Countries
+Cities
+Politics
+Government
+International Relations
+Wars
+Military
+Law
+Economics
+Finance
+Business
+Entrepreneurship
+Technology
+Artificial Intelligence
+Programming
+Cybersecurity
+Science
+Physics
+Chemistry
+Biology
+Mathematics
+Statistics
+Medicine
+Health
+Psychology
+Environment
+Climate Change
+Agriculture
+Energy
+Space
+Astronomy
+Animals
+Plants
+Oceans
+Weather
+Natural Disasters
+Sports
+Olympic Games
+Esports
+Entertainment
+Movies
+TV Shows
+Anime
+Music
+Literature
+Books
+Comics
+Art
+Architecture
+Photography
+Fashion
+Food
+Cooking
+Travel
+Tourism
+Transportation
+Automobiles
+Aviation
+Maritime
+Religion
+Philosophy
+Mythology
+Culture
+Languages
+Education
+Society
+Human Rights
+Crime
+Famous People
+Leaders
+Scientists
+Inventors
+Entrepreneurs
+Athletes
+Actors
+Musicians
+Companies
+Brands
+Organizations
+Startups
+Universities
+Awards
+Festivals
+Holidays
+Events
+Inventions
+Discoveries
+World Records
+Guinness World Records
+Quotes
+Trivia
+Fun Facts
+Current Affairs
+Breaking News
+Economy Updates
+Elections
+Diplomacy
+Space Missions
+Cryptocurrencies
+Stock Market
+Real Estate
+Personal Finance
+Internet
+Social Media
+Digital Culture
+Gaming
+Board Games
+Chess
+Puzzles
+Logic
+Ethics
+Leadership
+Communication
+Productivity
+Careers
+Jobs
+Workplace
+Family
+Relationships
+Parenting
+Lifestyle
+Fitness
+Nutrition
+Mental Health
+Beauty
+DIY
+Crafts
+Gardening
+Pets
+Wildlife
+Conservation
+Sustainability

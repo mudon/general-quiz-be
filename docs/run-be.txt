@@ -1,0 +1,5 @@
+# Run the server
+bun run index.ts
+
+# Check for errors (type-check only, no emit)
+bunx tsc --noEmit
