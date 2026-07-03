@@ -2,6 +2,7 @@ import { Elysia, t } from 'elysia';
 import * as categoriesService from './service';
 import { AppError } from '../auth/service';
 import { verifyToken } from '../../lib/jwt';
+import { pool } from '../../db/pool';
 
 function requireAdmin(user: unknown) {
   if (!user || typeof user !== 'object' || !('sub' in (user as Record<string, unknown>))) {
@@ -17,16 +18,25 @@ export const categoryRoutes = new Elysia()
     const authHeader = request.headers.get('authorization');
     if (!authHeader?.startsWith('Bearer ')) return { user: null };
     try {
-      return { user: await verifyToken(authHeader.slice(7)) };
+      const payload = await verifyToken(authHeader.slice(7));
+      const user = { ...payload, tier: 0 };
+      const tierResult = await pool.query<{ tier: number }>(
+        'SELECT tier FROM users WHERE id = $1', [payload.sub]
+      );
+      if (tierResult.rowCount && tierResult.rowCount > 0) {
+        user.tier = tierResult.rows[0]!.tier;
+      }
+      return { user };
     } catch {
       return { user: null };
     }
   })
 
   // GET /api/categories?tree=true
-  .get('/api/categories', async ({ query }) => {
+  .get('/api/categories', async ({ query, user }) => {
+    const maxTier = (user as { tier?: number } | null)?.tier ?? 0;
     const asTree = query.tree === 'true';
-    return asTree ? await categoriesService.getTree() : await categoriesService.getAll();
+    return asTree ? await categoriesService.getTree(maxTier) : await categoriesService.getAll(maxTier);
   }, {
     query: t.Object({
       tree: t.Optional(t.String()),

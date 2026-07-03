@@ -6,6 +6,7 @@ interface CategoryRow {
   path: string;
   name: string;
   icon: string | null;
+  tier: number;
   sort_order: number;
   created_at: string;
   depth: number;
@@ -18,6 +19,7 @@ export interface CategoryTree {
   name: string;
   path: string;
   icon: string | null;
+  tier: number;
   sortOrder: number;
   depth: number;
   parentId: string | null;
@@ -47,6 +49,7 @@ function mapRow(row: CategoryRow): CategoryTree {
     name: row.name,
     path: row.path,
     icon: row.icon,
+    tier: row.tier,
     sortOrder: row.sort_order,
     depth: row.depth,
     parentId: row.parent_id,
@@ -74,7 +77,7 @@ function buildTree(rows: CategoryRow[]): CategoryTree[] {
   return roots;
 }
 
-export async function getAll(): Promise<CategoryTree[]> {
+export async function getAll(maxTier?: number): Promise<CategoryTree[]> {
   const result = await pool.query<CategoryRow>(`
     SELECT cwp.*
     FROM categories_with_parent cwp
@@ -83,7 +86,7 @@ export async function getAll(): Promise<CategoryTree[]> {
   return result.rows.map(mapRow);
 }
 
-export async function getTree(): Promise<CategoryTree[]> {
+export async function getTree(maxTier?: number): Promise<CategoryTree[]> {
   const result = await pool.query<CategoryRow>(`
     SELECT cwp.*
     FROM categories_with_parent cwp

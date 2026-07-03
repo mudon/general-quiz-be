@@ -48,6 +48,7 @@ CREATE TABLE categories (
     name        TEXT NOT NULL,
     icon        TEXT,                          -- optional emoji/icon for the topic
     sort_order  INTEGER NOT NULL DEFAULT 0,    -- display order among siblings
+    tier        SMALLINT NOT NULL DEFAULT 0,   -- 0=free, 1=RM14.99, 2=RM50
     created_at  TIMESTAMPTZ NOT NULL DEFAULT now(),
     CONSTRAINT categories_path_unique UNIQUE (path)
 );
@@ -106,6 +107,7 @@ CREATE TABLE users (
     avatar_type         avatar_type,
     avatar_value        VARCHAR(255),
     selected_badge_slug VARCHAR(100) REFERENCES badges(slug),
+    tier                SMALLINT NOT NULL DEFAULT 0,   -- 0=free, 1=RM14.99, 2=RM50
     created_at          TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
     updated_at          TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
 
@@ -702,3 +704,21 @@ CREATE TABLE quiz_sessions (
 );
 
 CREATE INDEX quiz_sessions_user_idx ON quiz_sessions (user_id, category_id);
+
+-- ----------------------------------------------------------------------------
+-- SUBSCRIPTION_TRANSACTIONS — tracks Stripe payment attempts for tier upgrades.
+-- users.tier is updated only after status = 'paid' (in a transaction).
+-- ----------------------------------------------------------------------------
+CREATE TABLE subscription_transactions (
+    id            BIGSERIAL PRIMARY KEY,
+    user_id       UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    from_tier     SMALLINT NOT NULL DEFAULT 0,
+    to_tier       SMALLINT NOT NULL,
+    amount        NUMERIC(10,2) NOT NULL,
+    stripe_session_id VARCHAR(255),
+    status        VARCHAR(20) NOT NULL DEFAULT 'pending',
+    created_at    TIMESTAMPTZ NOT NULL DEFAULT now(),
+    completed_at  TIMESTAMPTZ
+);
+
+CREATE INDEX idx_sub_transactions_user ON subscription_transactions (user_id, status);

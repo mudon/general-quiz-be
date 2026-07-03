@@ -26,7 +26,7 @@ export async function register(firstName: string, lastName: string, email: strin
   const result = await pool.query(
     `INSERT INTO users (first_name, last_name, email, password_hash, auth_provider, email_verified)
      VALUES ($1, $2, $3, $4, 'email', FALSE)
-     RETURNING id, first_name, last_name, email, role, created_at`,
+     RETURNING id, first_name, last_name, email, role, tier, created_at`,
     [firstName, lastName, email, passwordHash]
   );
 
@@ -52,6 +52,7 @@ export async function register(firstName: string, lastName: string, email: strin
       lastName: user.last_name,
       email: user.email,
       role: user.role,
+      tier: user.tier,
       createdAt: user.created_at,
     },
     ...tokens,
@@ -67,10 +68,11 @@ export async function login(email: string, password: string) {
     last_name: string;
     email: string;
     role: string;
+    tier: number;
     password_hash: string | null;
     email_verified: boolean;
   }>(
-    `SELECT id, first_name, last_name, email, role, password_hash, email_verified
+    `SELECT id, first_name, last_name, email, role, tier, password_hash, email_verified
      FROM users
      WHERE email = $1 AND auth_provider = 'email'`,
     [email]
@@ -111,6 +113,7 @@ export async function login(email: string, password: string) {
       lastName: user.last_name,
       email: user.email,
       role: user.role,
+      tier: user.tier,
     },
     ...tokens,
   };
@@ -208,7 +211,7 @@ export async function logout(refreshToken: string) {
 
 export async function getMe(userId: string) {
   const result = await pool.query(
-    `SELECT id, first_name, last_name, email, role, avatar_type, avatar_value,
+    `SELECT id, first_name, last_name, email, role, tier, avatar_type, avatar_value,
             selected_badge_slug, email_verified, created_at
      FROM users WHERE id = $1`,
     [userId]
@@ -239,6 +242,7 @@ export async function getMe(userId: string) {
     lastName: user.last_name,
     email: user.email,
     role: user.role,
+    tier: user.tier,
     avatarType: user.avatar_type,
     avatarValue: user.avatar_value,
     selectedBadgeSlug: user.selected_badge_slug,

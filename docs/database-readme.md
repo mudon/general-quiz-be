@@ -35,7 +35,8 @@ erDiagram
     USERS ||--o| USER_STATS : has
     USERS ||--o{ USER_BADGES : earns
     BADGES ||--o{ USER_BADGES : "awarded as"
-    USERS }o--o| BADGES : "selects (by slug)"
+    QUIZ_SESSIONS ||--o{ USERS : belongs
+    USERS ||--o{ SUBSCRIPTION_TRANSACTIONS : "purchases"
 ```
 
 ## Walkthrough
@@ -43,6 +44,8 @@ erDiagram
 ### Categories
 
 Categories form a tree (e.g. Science → Biology → Genetics) stored as `ltree` paths rather than a self-referencing `parent_id` column. That choice is what makes `categories_with_depth` and `categories_with_parent` possible as plain views instead of recursive CTEs: `nlevel(path)` gives the depth and `subpath(path, 0, nlevel(path)-1)` gives the parent's path directly, no recursion required. A GiST index on `path` supports the `ltree` ancestor/descendant operators (`<@`, `@>`, `~`) efficiently, and a separate btree index speeds up exact-path lookups and ordering. Moving a subtree means updating the path prefix on every descendant row; nothing else has to change.
+
+Each category has a `tier` (0 = free, 1 = $10.99, 2 = $50.99). Users with `tier = 0` see only `tier = 0` categories. Users with `tier = 1` see `tier <= 1`. The category tree endpoint filters accordingly using the user's current tier from the database (queried live on every request — not from a stale JWT claim). Creating a quiz session for a category also validates the user's tier against the category's tier.
 
 ### Question types and the "enum decides the column" pattern
 
@@ -77,6 +80,10 @@ Grading itself is automatic — comparing the submission against whatever's reco
 - **`user_stats` and `user_category_stats` are not updated automatically.** No trigger in this schema writes to them. The application needs to update them whenever a user answers a question or logs in, or they'll stay at their default values indefinitely.
 - **Badges are not auto-awarded.** Nothing here inserts into `user_badges` when some achievement condition is met — that logic belongs in the application, which then earns a user the right to later select that badge via `selected_badge_slug`.
 - **`update_review_schedule` only fires on `INSERT` into `user_answers`, not `UPDATE`.** `grade_user_answer` does recompute `is_correct` on an update, but the spaced-repetition schedule won't reflect that correction — it only reacts to brand-new submissions, not edits to existing ones.
+
+### Subscriptions
+
+`subscription_transactions` records every Stripe payment attempt for tier upgrades. `users.tier` starts at 0 (free). When the user checks out via Stripe, a `subscription_transactions` row is created with `status = 'pending'`. If Stripe's webhook confirms payment (`checkout.session.completed`), the row is updated to `status = 'paid'` AND `users.tier` is updated to the purchased tier **in a single database transaction** — ensuring ACID compliance: either both updates happen or neither does. No orphaned payments, no tier mismatch.
 
 ## Reference: views
 

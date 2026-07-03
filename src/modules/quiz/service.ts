@@ -28,10 +28,19 @@ export interface NextQuestion {
 }
 
 export async function createSession(userId: string, categoryId: string) {
-  const cat = await pool.query<{ name: string }>(
-    'SELECT name FROM categories WHERE id = $1', [categoryId]
+  const cat = await pool.query<{ name: string; tier: number }>(
+    'SELECT name, tier FROM categories WHERE id = $1', [categoryId]
   );
   if (!cat.rowCount || cat.rowCount === 0) throw new AppError(404, 'Category not found');
+
+  const user = await pool.query<{ tier: number }>(
+    'SELECT tier FROM users WHERE id = $1', [userId]
+  );
+  const userTier = user.rows[0]?.tier ?? 0;
+
+  if (userTier < cat.rows[0]!.tier) {
+    throw new AppError(403, 'Your subscription tier does not include this category. Upgrade to access.');
+  }
 
   const count = await pool.query<{ c: string }>(
     `SELECT COUNT(*)::text AS c FROM questions q

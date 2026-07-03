@@ -873,7 +873,74 @@ DELETE /api/admin/users/:id
   Notes: cascades to user_stats, user_answers, review_schedule, refresh_tokens,
          user_badges, user_category_stats.
 
-===============================================================================
+================================================================================
+SUBSCRIPTIONS /api/subscriptions
+================================================================================
+
+Tiers:
+  0 = Free     (3 categories, $0)
+  1 = $10.99   (10 categories)
+  2 = $50.99   (all categories)
+
+Tier is stored on both users.tier and categories.tier.
+  - Free user sees categories WHERE tier = 0
+  - Tier 1 user sees categories WHERE tier <= 1
+  - Tier 2 user sees all categories
+  - Create session validates user.tier >= category.tier
+
+GET /api/subscriptions/plans
+   Auth: none
+   Response 200:
+     [
+       {
+         "plan":          "free",
+         "name":          "Free",
+         "tier":          0,
+         "priceUSD":      0,
+         "categoryLimit": null
+       },
+       {
+         "plan":          "premium_10",
+         "name":          "$10.99",
+         "tier":          1,
+         "priceUSD":      14.99,
+         "categoryLimit": 10
+       },
+       {
+         "plan":          "premium_all",
+         "name":          "RM50",
+         "tier":          2,
+         "priceUSD":      50,
+         "categoryLimit": null
+       }
+     ]
+
+---
+
+POST /api/subscriptions/checkout
+   Auth: Bearer <accessToken>
+   Body:
+     { "plan": "premium_10 | premium_all" }
+   Response 200:
+     { "paymentUrl": "https://checkout.stripe.com/...", "sessionId": "cs_..." }
+   Errors: 400 (invalid plan or already at that tier), 500 (Stripe not configured)
+   Notes: creates a subscription_transactions row with status='pending'.
+          Stripe Checkout redirects user to payment page.
+          After payment, Stripe calls the webhook below.
+
+---
+
+POST /api/subscriptions/webhook
+   Auth: none (called by Stripe)
+   Header: stripe-signature: <signature>
+   Body: raw Stripe event JSON
+   On checkout.session.completed:
+     → Updates subscription_transactions.status = 'paid'
+     → Updates users.tier to the purchased tier
+     → Both in a single ACID transaction (COMMIT/ROLLBACK)
+   Errors: 400 (invalid signature)
+
+================================================================================
 HEALTH
 ================================================================================
 

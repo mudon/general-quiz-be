@@ -8,6 +8,7 @@ export const config = {
   server: {
     port: parseInt(process.env.PORT || '3000', 10),
     appUrl: process.env.APP_URL || 'http://localhost:3000',
+    flutterAppUrl: process.env.FLUTTER_APP_URL || 'http://localhost:8080',
   },
   mail: {
     host: process.env.SMTP_HOST || 'live.smtp.mailtrap.io',
@@ -16,6 +17,15 @@ export const config = {
     pass: process.env.SMTP_PASS || '',
     fromEmail: process.env.SMTP_FROM_EMAIL || 'noreply@quizmaster.local',
     fromName: process.env.SMTP_FROM_NAME || 'QuizMaster',
+  },
+  stripe: {
+    secretKey: process.env.STRIPE_SECRET_KEY || '',
+    webhookSecret: process.env.STRIPE_WEBHOOK_SECRET || '',
+  },
+  plans: {
+    free:       { tier: 0, name: 'Free',        priceMYR: 0,   priceUSD: 0,     categoryLimit: null },
+    premium_10: { tier: 1, name: 'Premium',     priceMYR: 49.90, priceUSD: 10.99, categoryLimit: 10 },
+    premium_all:{ tier: 2, name: 'All Access',  priceMYR: 229.90, priceUSD: 50.99, categoryLimit: null },
   },
   tokens: {
     accessExpiresIn: '15min',
