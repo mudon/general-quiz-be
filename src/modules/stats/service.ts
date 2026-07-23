@@ -16,6 +16,7 @@ export interface CategoryStat {
   questionsAnswered: number;
   correctAnswers: number;
   accuracy: number;
+  completedSessions: number;
   lastAnsweredAt: string | null;
 }
 
@@ -55,12 +56,21 @@ export async function getCategoryStats(userId: string): Promise<CategoryStat[]> 
     category_path: string;
     questions_answered: number;
     correct_answers: number;
+    completed_sessions: number;
     last_answered_at: string | null;
   }>(
     `SELECT ucs.category_id, c.name AS category_name, c.path::text AS category_path,
-            ucs.questions_answered, ucs.correct_answers, ucs.last_answered_at
+            ucs.questions_answered, ucs.correct_answers, ucs.last_answered_at,
+            COALESCE(qs.completed, 0) AS completed_sessions
      FROM user_category_stats ucs
      JOIN categories c ON c.id = ucs.category_id
+     LEFT JOIN LATERAL (
+       SELECT COUNT(*)::int AS completed
+       FROM quiz_sessions
+       WHERE user_id = $1
+         AND category_id = ucs.category_id
+         AND completed_at IS NOT NULL
+     ) qs ON true
      WHERE ucs.user_id = $1
      ORDER BY ucs.questions_answered DESC`,
     [userId]
@@ -75,6 +85,7 @@ export async function getCategoryStats(userId: string): Promise<CategoryStat[]> 
     accuracy: r.questions_answered > 0
       ? Math.round((r.correct_answers / r.questions_answered) * 1000) / 10
       : 0,
+    completedSessions: r.completed_sessions,
     lastAnsweredAt: r.last_answered_at,
   }));
 }

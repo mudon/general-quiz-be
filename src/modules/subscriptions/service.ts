@@ -59,7 +59,7 @@ export async function checkout(userId: string, planKey: string, currency: 'myr' 
         currency: currency,
         product_data: {
           name: `QuizMaster — ${plan.name}`,
-          description: planKey === 'premium_10' ? '10 categories access' : 'Unlimited categories access',
+          description: `${plan.name} access`,
         },
         unit_amount: amountCents,
       },

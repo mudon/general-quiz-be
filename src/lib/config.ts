@@ -26,6 +26,7 @@ export const config = {
     free:       { tier: 0, name: 'Free',        priceMYR: 0,   priceUSD: 0,     categoryLimit: null },
     premium_10: { tier: 1, name: 'Premium',     priceMYR: 49.90, priceUSD: 10.99, categoryLimit: 10 },
     premium_all:{ tier: 2, name: 'All Access',  priceMYR: 229.90, priceUSD: 50.99, categoryLimit: null },
+    ultimate:   { tier: 3, name: 'Ultimate',    priceMYR: 399.90, priceUSD: 89.99, categoryLimit: null },
   },
   tokens: {
     accessExpiresIn: '15min',

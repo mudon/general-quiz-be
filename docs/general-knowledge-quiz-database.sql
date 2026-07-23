@@ -456,7 +456,8 @@ SELECT
                )
         FROM question_options o
         WHERE o.question_id = q.id
-    ) AS options
+    ) AS options,
+    c.icon             AS category_icon
 FROM questions q
 JOIN categories c ON c.id = q.category_id
 LEFT JOIN answers a ON a.question_id = q.id;

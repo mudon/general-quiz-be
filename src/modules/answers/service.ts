@@ -108,8 +108,14 @@ export async function submitAnswer(userId: string, questionId: string, input: Su
 
   const submitted = result.rows[0]!;
 
-  // update stats
-  upsertStats(userId, question.rows[0]!.category_id, submitted.is_correct);
+  // update stats — only on the FIRST answer for this question
+  const prior = await pool.query(
+    `SELECT 1 FROM user_answers WHERE user_id = $1 AND question_id = $2 AND id != $3`,
+    [userId, questionId, submitted.id]
+  );
+  if (!prior.rowCount || prior.rowCount === 0) {
+    upsertStats(userId, question.rows[0]!.category_id, submitted.is_correct);
+  }
 
   // increment active quiz sessions that include this question's category
   await pool.query(
